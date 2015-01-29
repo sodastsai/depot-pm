@@ -104,6 +104,8 @@ def install(package_file=None, verbose=False, dry_run=False):
                 # populate installers and packages from package content
                 packages = package_content.get('packages', None)
                 installers.update(package_content.get('installers', {}))
+                for installer in installers:
+                    installers[installer] = installers[installer] or {}
                 installers = OrderedDict(sorted([(installer_name, installer_config)
                                                  for installer_name, installer_config in installers.items()],
                                                 key=lambda installer_set: installer_set[1].get('os', False),
