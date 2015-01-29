@@ -96,3 +96,10 @@ yum        | {DEFAULE} but ```os``` and ```sudo``` are changed to ```true```. ``
 ## Contact
 
 Use the issue tracker to contact me :smile:
+
+
+
+## TODO
+
+* support npm
+* check package.json, requirements.txt, and other package file support.
