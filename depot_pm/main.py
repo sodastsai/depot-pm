@@ -82,8 +82,10 @@ def install(package_file=None, verbose=False, dry_run=False):
         if verbose:
             console.info('resolved package file: {}'.format(package_content_path))
     else:
-        console.error('Cannot find package file.')
+        if verbose:
+            console.error('Cannot find package file.')
         task.exit(1)
+        return  # suppress pycharm warning
 
     # parse it
     with open(package_content_path, 'r') as f:
@@ -96,31 +98,45 @@ def install(package_file=None, verbose=False, dry_run=False):
             task.exit(2)
             return  # suppress pycharm warning
         else:
-            installers = dict(default_installers)
+            installers = None
             """:type: dict[str, dict]"""
             packages = None
             """:type: dict"""
             if package_content:
-                # populate installers and packages from package content
-                packages = package_content.get('packages', None)
+                # copy default installers
+                installers = dict(default_installers)
                 installers.update(package_content.get('installers', {}))
-                for installer in installers:
-                    installers[installer] = installers[installer] or {}
+                # Get packages
+                packages = package_content.get('packages', None)
+                # populate/finalize installers
+                empty_installers = []
+                for installer, installer_config in installers.items():
+                    # Get packages of this installer
+                    installer_packages = packages.pop(installer, None)
+                    if not installer_packages:
+                        # No packages for this installer ... pop it
+                        empty_installers.append(installer)
+                        continue
+                    # Create installer_config if it's empty
+                    if not installer_config:
+                        installer_config = installers[installer] = {}
+                    # Setup packages
+                    installer_config['packages'] = installer_packages
+                # Clean up
+                for empty_installer in empty_installers:
+                    installers.pop(empty_installer)
+                # Sort installers by os-specific or not
+                # (OS specific installers should be install first)
                 installers = OrderedDict(sorted([(installer_name, installer_config)
                                                  for installer_name, installer_config in installers.items()],
                                                 key=lambda installer_set: installer_set[1].get('os', False),
                                                 reverse=True))
-                # Find packages of each installer
-                for installer, installer_config in installers.items():
-                    installer_packages = packages.pop(installer, None)
-                    if not installer_packages:
-                        installers.pop(installer)
-                        continue
-                    installer_config['packages'] = installer_packages
+            # No installer ... pop
             if not installers:
                 if verbose:
                     console.warn('Empty package content file')
                 task.exit(0)
+            # some packages are not consumed by installers ... pop
             if packages:
                 if verbose:
                     console.error('Unknown installers: {}. Please setup them in "installers" section'.
@@ -138,7 +154,7 @@ def install(package_file=None, verbose=False, dry_run=False):
         command_name = installer_config.get('command', installer)
         packages = installer_config['packages']
 
-        # Check
+        # Check installer
         if not has_command(command_name):
             if verbose:
                 console.warn('Could not found {}. depot-pm will skip it.'.format(command_name))
