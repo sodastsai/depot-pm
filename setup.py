@@ -18,13 +18,15 @@
 
 from __future__ import unicode_literals, division, absolute_import, print_function
 import os
-from setuptools import setup
+from setuptools import setup, find_packages
+
+from depot_pm import __version__
 
 with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
     long_description = f.read()
 
 setup(name='depot-pm',
-      version='0.0.1',
+      version=__version__,
       url='https://github.com/sodastsai/depot-pm',
       license='Apache License 2.0',
       author='sodas',
@@ -32,6 +34,7 @@ setup(name='depot-pm',
       description='depot package manager helps you manage pacakges',
       long_description=long_description,
 
+      packages=find_packages(),
       py_modules=['depot_pm'],
       install_requires=[
           'PyYAML>=3.08',
