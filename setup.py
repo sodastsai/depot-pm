@@ -17,14 +17,15 @@
 #
 
 from __future__ import unicode_literals, division, absolute_import, print_function
-from setuptools import setup, find_packages
+from depot_pm import __version__
 import os
+from setuptools import setup
 
 with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
     long_description = f.read()
 
 setup(name='depot-pm',
-      version='0.0.1',
+      version=__version__,
       url='https://github.com/sodastsai/depot-pm',
       license='Apache License 2.0',
       author='sodas',
@@ -34,12 +35,13 @@ setup(name='depot-pm',
 
       py_modules=['depot_pm'],
       install_requires=[
-          'taskr>=0.2.5',
+          'PyYAML>=3.08',
+          'taskr>=0.2.6',
       ],
 
       entry_points={
           'console_scripts': [
-              'depot-pm = depot_pm:dispatch',
+              'depot-pm = depot_pm.main:task.dispatch',
           ],
       },
 

@@ -1,0 +1,17 @@
+packages:
+  pip:
+    - taskr
+  brew:
+    - youtube-dl
+  yum:
+    - wget
+  gem:
+    - cocoapods
+
+installers:
+  brew:
+    sudo: false
+    os: true
+    multiple: true
+    syntax: "{} install {}"
+    command: "brew"

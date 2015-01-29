@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 #
 # Copyright 2015 sodastsai
 #
@@ -17,21 +15,6 @@
 #
 
 from __future__ import unicode_literals, division, absolute_import, print_function
-import os
-from taskr import task
 
-
-@task
-def install():
-    print('xd')
-    print(os.getcwd())
-    print(os.path.abspath(os.path.dirname(__file__)))
-
-
-if __name__ == '__main__':
-    task.dispatch()
-
-
-def dispatch():
-    task.dispatch()
-    return 0
+VERSION = (0, 0, 1)
+__version__ = '.'.join(map(str, VERSION))
