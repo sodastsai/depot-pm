@@ -17,7 +17,6 @@
 #
 
 from __future__ import unicode_literals, division, absolute_import, print_function
-from depot_pm import __version__
 import os
 from setuptools import setup
 
@@ -25,7 +24,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
     long_description = f.read()
 
 setup(name='depot-pm',
-      version=__version__,
+      version='0.0.1',
       url='https://github.com/sodastsai/depot-pm',
       license='Apache License 2.0',
       author='sodas',
