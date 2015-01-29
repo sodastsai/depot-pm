@@ -94,7 +94,7 @@ def install(package_file=None, verbose=False, dry_run=False):
             if verbose:
                 console.error('Cannot parse package file: {}'.format(e))
             task.exit(2)
-            return  # supress pycharm warning
+            return  # suppress pycharm warning
         else:
             installers = dict(default_installers)
             """:type: dict[str, dict]"""
