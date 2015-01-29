@@ -77,7 +77,7 @@ The ```installers``` section defines an installer. Installer configurations has 
 Key | Description | Default Value
 ----|-------------|---------------
 sudo | boolean flag indicating wheather this installer should run with sudo command   | False
-os | boolean flag indicating this installer is an OS specific installer which <br>be run before other installers. (non OS specific ones) | False
+os | boolean flag indicating this installer is an OS specific installer which be run before other installers. (non OS specific ones) | False
 multiple | the installer could install multiple packages at ones | True
 syntax | the template to generate command. Use [python's string format syntax](https://docs.python.org/3/library/string.html#formatspec) | {} install {}
 command | the command name of this installer | {INSTALLER_NAME}
