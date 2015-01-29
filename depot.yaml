@@ -1,6 +1,7 @@
 packages:
   pip:
     - taskr
+    - boto
   brew:
     - youtube-dl
   yum:
