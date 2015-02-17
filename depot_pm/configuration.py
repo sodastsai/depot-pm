@@ -77,7 +77,8 @@ class Configuration(object):
         # Get installers by merging default and user defined ones
         installers = {installer.name: installer for installer in default_installers}
         installers.update({installer.name: installer for installer in
-                           map(lambda x: Installer(x[0], **x[1]), self._config_content.get('installers', {}).items())})
+                           map(lambda x: Installer(x[0], **(x[1] or {})),
+                               self._config_content.get('installers', {}).items())})
 
         # Feed installer packages
         for installer in installers.values():
