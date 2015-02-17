@@ -7,7 +7,7 @@ a pacakge manager helps you to install packages from multiple package managers q
 ## Installation
 
 ```shell
-pip install depot-pm
+pip install -U depot-pm
 ```
 
 
@@ -24,15 +24,13 @@ depot-pm version
 
 * install packages
 
-```shell
-depot-pm install
+```bash
+depot-pm install [package-file]
 ```
 
 By default, depot-pm will find ```depot.yaml``` or ```depot.json``` from current working directory.
 if depot-pm could not find these config files at currnet working directory, it will find in upper directory
 until it reaches ```/```.
-
-You could use ```--package-file``` to specify the path of package file.
 
 
 
@@ -56,10 +54,13 @@ packages:
 
 So the sample file (depoy.yaml) will produce following commands on OS X (which uses ```brew``` but not ```yum```):
 ```shell
+which python3 1>/dev/null 2>&1 || brew install python3
 brew install youtube-dl
 pip install taskr boto
 gem install cocoapods
 ```
+Note that it will check whether python3 exists or not before installing python 3.
+
 and following on CentOS (uses ```yum```):
 ```shell
 sudo yum install -y wget
