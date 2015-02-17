@@ -161,18 +161,36 @@ def install(package_file=None, verbose=False, dry_run=False):
             continue
 
         commands = []
+        multiple_packages_command_packages = []
         # Make commands
-        if support_multiple_packages:
-            command = command_syntax.format(command_name, ' '.join(packages))
-            if require_sudo:
-                command = 'sudo {}'.format(command)
-            commands.append(command)
-        else:
-            for package in packages:
+        for package in packages:
+            if isinstance(package, dict):
+                test = package['test']
+                package = package['package']
+            else:
+                test = None
+
+            if support_multiple_packages and not test:
+                multiple_packages_command_packages.append(package)
+                command = None
+            elif test:
+                command = '{} 1>/dev/null 2>&1 || {}'.format(
+                    test, command_syntax.format(command_name, package)
+                )
+            else:
                 command = command_syntax.format(command_name, package)
+
+            if command:
                 if require_sudo:
                     command = 'sudo {}'.format(command)
                 commands.append(command)
+
+        if multiple_packages_command_packages:
+            multiple_packages_command = command_syntax.format(command_name,
+                                                              ' '.join(multiple_packages_command_packages))
+            if require_sudo:
+                    multiple_packages_command = 'sudo {}'.format(multiple_packages_command)
+            commands.append(multiple_packages_command)
 
         # Go
         if verbose:

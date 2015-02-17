@@ -4,6 +4,8 @@ packages:
     - boto
   brew:
     - youtube-dl
+    - test: which python3
+      package: python3
   yum:
     - wget
   gem:
