@@ -24,52 +24,6 @@ import yaml
 from depot_pm.configuration import Configuration
 
 
-def resolve_package_content_path(source_path):
-    """
-    :type source_path: str
-    :rtype: str
-    """
-    dir_path = None
-    while not source_path:
-        # Go to upper level
-        new_dir_path = os.path.split(dir_path)[0] if dir_path else os.getcwd()
-        if new_dir_path == dir_path:
-            break
-        else:
-            dir_path = new_dir_path
-        # Check file - yaml first
-        source_path = os.path.join(dir_path, 'depot.yaml')
-        if not os.path.exists(source_path):
-            # Check file - json
-            source_path = os.path.join(dir_path, 'depot.json')
-            if not os.path.exists(source_path):
-                source_path = None
-
-    return source_path
-
-
-default_installers = {
-    'pip': {},
-    'gem': {},
-    'yum': {
-        'os': True,
-        'sudo': True,
-        'syntax': '{} install -y {}',
-    },
-    'brew': {
-        'os': True,
-    },
-}
-"""
-keys:
-  sudo(bool, default=False),
-  os(bool, default=False),
-  multiple(bool, default=True),
-  syntax(str, default='{} install {}'),
-  command(str, default=<installer name>)
-"""
-
-
 @task
 @task.set_argument('package_file', help='path of package file', nargs='?')
 @task.set_argument('--verbose', '-v', dest='verbose', action='store_true')
