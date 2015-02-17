@@ -65,7 +65,8 @@ class Configuration(object):
         """
         :rtype: dict[str, list[Package]]
         """
-        return {name: list(map(Package, packages)) for name, packages in self._config_content['packages'].items()}
+        return {name: list(map(Package, packages))
+                for name, packages in self._config_content.get('packages', {}).items()}
 
     @lazy_property
     def installers(self):
@@ -76,7 +77,7 @@ class Configuration(object):
         # Get installers by merging default and user defined ones
         installers = {installer.name: installer for installer in default_installers}
         installers.update({installer.name: installer for installer in
-                           map(lambda x: Installer(x[0], **x[1]), self._config_content['installers'].items())})
+                           map(lambda x: Installer(x[0], **x[1]), self._config_content.get('installers', {}).items())})
 
         # Feed installer packages
         for installer in installers.values():
