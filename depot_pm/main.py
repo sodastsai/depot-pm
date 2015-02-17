@@ -64,7 +64,7 @@ def install(package_file=None, verbose=False, dry_run=False):
 
 @task
 def version():
-    print('depot-pm {}'.format(depot_pm_version))
+    console.show('depot-pm {}'.format(depot_pm_version))
 
 
 if __name__ == '__main__':
