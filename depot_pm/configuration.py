@@ -106,7 +106,8 @@ class Configuration(object):
                         command = '{} 1>/dev/null 2>&1 || {}'.format(package.test, command)
                     commands.append(command)
             # Collect multuple-install
-            commands.append(installer.syntax.format(installer.name, ' '.join(multi_install_packages)))
+            if multi_install_packages:
+                commands.append(installer.syntax.format(installer.name, ' '.join(multi_install_packages)))
             # Append sudo
             if installer.sudo:
                 commands = map(lambda c: 'sudo {}'.format(c), commands)
