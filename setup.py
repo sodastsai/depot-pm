@@ -37,7 +37,7 @@ setup(name='depot-pm',
       packages=find_packages(),
       install_requires=[
           'PyYAML>=3.08',
-          'taskr>=0.2.6',
+          'taskr>=0.2.12',
       ],
 
       entry_points={
@@ -57,7 +57,6 @@ setup(name='depot-pm',
           'Programming Language :: Python',
           'Programming Language :: Python :: 2.7',
           'Programming Language :: Python :: 3',
-          'Programming Language :: Python :: 3.3',
           'Programming Language :: Python :: 3.4',
           'Topic :: Software Development',
           'Topic :: Utilities',
