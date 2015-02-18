@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Install depot-pm if necessary
+which depot-pm 1>/dev/null 2>&1 || {
+    # Find pip
+    if [ -z "${PIP}" ]; then
+        which pip3 1>/dev/null 2>&1 && PIP=pip3 || PIP=pip
+    fi
+    ${PIP} install depot-pm
+}
+# Run install
+depot-pm install

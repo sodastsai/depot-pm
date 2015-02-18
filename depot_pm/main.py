@@ -67,6 +67,30 @@ def version():
     console.show('depot-pm {}'.format(depot_pm_version))
 
 
+@task
+@task.set_argument('script_path', nargs='?')
+def init_script(script_path=None):
+    script = """#!/bin/sh
+
+# Install depot-pm if necessary
+which depot-pm 1>/dev/null 2>&1 || {
+    # Find pip
+    if [ -z "${PIP}" ]; then
+        which pip3 1>/dev/null 2>&1 && PIP=pip3 || PIP=pip
+    fi
+    # Go
+    ${PIP} install depot-pm
+}
+# Run install
+depot-pm install
+"""
+
+    script_path = script_path or os.path.abspath(os.path.join(os.getcwd(), 'depot-pm-init'))
+    with open(script_path, 'w') as f:
+        f.write(script)
+    os.system('chmod +x {}'.format(script_path))
+
+
 if __name__ == '__main__':
     task.should_raise_exceptions = True
     task.dispatch()
