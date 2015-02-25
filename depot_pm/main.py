@@ -18,6 +18,7 @@
 
 from __future__ import unicode_literals, division, absolute_import, print_function
 import os
+import requests
 from depot_pm import __version__ as depot_pm_version
 from taskr import task, console
 import yaml
@@ -30,6 +31,8 @@ from .check import test_names, check as check_core
 @task.set_argument('--verbose', '-v', dest='verbose', action='store_true')
 @task.set_argument('--dry-run', '-d', dest='dry_run', action='store_true')
 def install(package_file=None, verbose=False, dry_run=False):
+    version()
+
     try:
         configuration = Configuration.auto_discover(package_file)
     except yaml.YAMLError as e:
@@ -65,6 +68,12 @@ def install(package_file=None, verbose=False, dry_run=False):
 
 @task
 def version():
+    newest_version = max(list(requests.get('https://pypi.python.org/pypi/depot-pm/json').json()['releases'].keys()),
+                         key=lambda s: tuple(map(int, s.split('.'))))
+    if newest_version != depot_pm_version:
+        console.info('The newest version of depot-pm is {}'.format(newest_version))
+        console.info('Update your depot-pm via `pip install -U depot-pm`.')
+
     console.show('depot-pm {}'.format(depot_pm_version))
 
 

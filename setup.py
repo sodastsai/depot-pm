@@ -38,6 +38,7 @@ setup(name='depot-pm',
       install_requires=[
           'PyYAML>=3.08',
           'taskr>=0.2.13',
+          'requests>=2.5',
       ],
 
       entry_points={
