@@ -29,10 +29,16 @@ class Package(object):
 
     @property
     def name(self):
+        """
+        :rtype: str
+        """
         return self._name
 
     @property
     def test(self):
+        """
+        :rtype: str
+        """
         return self._test
 
     def __repr__(self):

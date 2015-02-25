@@ -21,7 +21,8 @@ import os
 from depot_pm import __version__ as depot_pm_version
 from taskr import task, console
 import yaml
-from depot_pm.configuration import Configuration
+from .configuration import Configuration
+from .check import test_names, check as check_core
 
 
 @task
@@ -89,6 +90,21 @@ depot-pm install
     with open(script_path, 'w') as f:
         f.write(script)
     os.system('chmod +x {}'.format(script_path))
+
+
+@task
+@task.set_argument('test_name', choices=test_names)
+@task.set_argument('args', nargs='*')
+@task.set_argument('-v', '--verbose', dest='verbose', action='store_true')
+def check(test_name, args=(), verbose=False):
+    try:
+        check_core(test_name, *args)
+    except ValueError as e:
+        if verbose:
+            console.error(str(e))
+        task.exit(1)
+    else:
+        task.exit(0)
 
 
 if __name__ == '__main__':

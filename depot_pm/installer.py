@@ -44,7 +44,7 @@ class Installer(object):
 
     def __iter__(self):
         """
-        :rtype: depot_pm.package.Package
+        :rtype: collections.Iterable[depot_pm.package.Package]
         """
         for package in self.packages:
             yield package

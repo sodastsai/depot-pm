@@ -6,6 +6,8 @@ packages:
     - youtube-dl
     - test: which python3
       package: python3
+    - test: :has_command:wget
+      package: wget
   yum:
     - wget
   gem:

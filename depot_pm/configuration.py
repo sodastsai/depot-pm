@@ -18,6 +18,7 @@ from __future__ import unicode_literals, division, absolute_import, print_functi
 import os
 from taskr.contrib.lang import lazy_property
 import yaml
+from .check import test_names
 from .package import Package
 from .installer import Installer, default_installers
 
@@ -102,9 +103,20 @@ class Configuration(object):
                     multi_install_packages.append(package.name)
                 else:
                     # Install one-by-one (including test)
-                    command = installer.syntax.format(installer.name, package.name)
+                    test = None
                     if package.test:
-                        command = '{} 1>/dev/null 2>&1 || {}'.format(package.test, command)
+                        if package.test.startswith(':'):
+                            check_test_name, _, args = package.test[1:].partition(':')
+                            if check_test_name in test_names:
+                                test = 'depot-pm check {} {}'.format(check_test_name, args)
+                            else:
+                                raise ValueError('Invalid test name for *check* command: {}'.format(check_test_name))
+                        else:
+                            test = package.test
+
+                    command = installer.syntax.format(installer.name, package.name)
+                    if test:
+                        command = '{} 1>/dev/null 2>&1 || {}'.format(test, command)
                     commands.append(command)
             # Collect multuple-install
             if multi_install_packages:
