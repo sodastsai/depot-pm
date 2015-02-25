@@ -31,7 +31,7 @@ from .check import test_names, check as check_core
 @task.set_argument('--verbose', '-v', dest='verbose', action='store_true')
 @task.set_argument('--dry-run', '-d', dest='dry_run', action='store_true')
 def install(package_file=None, verbose=False, dry_run=False):
-    version()
+    version(warning_only=True)
 
     try:
         configuration = Configuration.auto_discover(package_file)
@@ -67,14 +67,17 @@ def install(package_file=None, verbose=False, dry_run=False):
 
 
 @task
-def version():
+@task.set_argument('--warning-only', dest='warning_only', action='store_true')
+def version(warning_only=False):
+    version_cmp = lambda s: tuple(map(int, s.split('.')))
     newest_version = max(list(requests.get('https://pypi.python.org/pypi/depot-pm/json').json()['releases'].keys()),
-                         key=lambda s: tuple(map(int, s.split('.'))))
-    if newest_version != depot_pm_version:
+                         key=version_cmp)
+    if max(newest_version, depot_pm_version, key=version_cmp) != depot_pm_version:
         console.info('The newest version of depot-pm is {}'.format(newest_version))
         console.info('Update your depot-pm via `pip install -U depot-pm`.')
 
-    console.show('depot-pm {}'.format(depot_pm_version))
+    if not warning_only:
+        console.show('depot-pm {}'.format(depot_pm_version))
 
 
 @task
