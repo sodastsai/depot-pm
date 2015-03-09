@@ -104,3 +104,4 @@ Use the issue tracker to contact me :smile:
 
 * support npm
 * check package.json, requirements.txt, and other package file support.
+* post-install action of each package
