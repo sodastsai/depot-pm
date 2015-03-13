@@ -12,6 +12,8 @@ packages:
     - wget
   gem:
     - cocoapods
+  npm:
+    - less
 
 installers:
   brew:

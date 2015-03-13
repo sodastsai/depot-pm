@@ -58,6 +58,7 @@ which python3 1>/dev/null 2>&1 || brew install python3
 brew install youtube-dl
 pip install taskr boto
 gem install cocoapods
+npm install -g less
 ```
 Note that it will check whether python3 exists or not before installing python 3.
 
@@ -66,6 +67,7 @@ and following on CentOS (uses ```yum```):
 sudo yum install -y wget
 pip install taskr boto
 gem install cocoapods
+npm install -g less
 ```
 
 The format of package name could be any acceptable form of each installers.
@@ -88,7 +90,9 @@ Currenty we have:
 Installers | Config
 -----------|--------
 pip        | {DEFAULT}
+pip3       | {DEFAULT}
 gem        | {DEFAULT}
+npm        | {DEFAULT} but ```syntax``` is ```{} install -g {}```
 brew       | {DEFAULE} but ```os``` is changed to ```true```
 yum        | {DEFAULE} but ```os``` and ```sudo``` are changed to ```true```. ```syntax``` is ```{} install -y {}```
 
@@ -102,5 +106,4 @@ Use the issue tracker to contact me :smile:
 
 ## TODO
 
-* support npm
 * check package.json, requirements.txt, and other package file support.

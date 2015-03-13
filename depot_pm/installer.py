@@ -58,6 +58,7 @@ default_installers = (
     Installer('pip'),
     Installer('pip3'),
     Installer('gem'),
+    Installer('npm', syntax='{} install -g {}'),
     Installer('brew', os=True),
     Installer('yum', os=True, sudo=True, syntax='{} install -y {}'),
 )
