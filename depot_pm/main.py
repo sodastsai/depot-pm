@@ -87,10 +87,14 @@ def init_script(script_path=None):
 
 # Install depot-pm if necessary
 which depot-pm 1>/dev/null 2>&1 || {
-    # Find pip
-    if [ -z "${PIP}" ]; then
-        which pip3 1>/dev/null 2>&1 && PIP=pip3 || PIP=pip
-    fi
+    [ -z "${PIP}" ] && {
+        which pip3 1>/dev/null 2>&1 && PIP=pip3
+    } || {
+        which pip 1>/dev/null 2>&1 && PIP=pip || {
+            easy_install pip
+            PIP=pip
+        }
+    }
     # Go
     ${PIP} install depot-pm
 }
