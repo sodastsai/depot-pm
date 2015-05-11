@@ -21,9 +21,39 @@ import os
 import requests
 from depot_pm import __version__ as depot_pm_version
 from taskr import task, console
+from taskr.contrib.system import os_info, has_command, run
 import yaml
 from .configuration import Configuration
 from .check import test_names, check as check_core
+
+
+@task
+@task.set_argument('--verbose', '-v', dest='verbose', action='store_true')
+@task.set_argument('--dry-run', '-d', dest='dry_run', action='store_true')
+def setup(verbose=False, dry_run=False):
+    version(warning_only=True)
+
+    if os_info.is_osx:
+        # Check for `brew`
+        if not has_command('brew'):
+            if verbose:
+                console.info('Install homebrew as package manager')
+            command = 'ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
+            if dry_run or verbose:
+                console.show(command)
+            if not dry_run:
+                os.system(command)
+        # Check the source of python and ruby
+        python_version, _ = run('brew ls --versions python', capture_output=True)
+        if not python_version:
+            console.warn('You should use brew-installed python. (brew install python)')
+        ruby_version, _ = run('brew ls --versions ruby', capture_output=True)
+        if not ruby_version:
+            console.warn('You should use brew-installed ruby. (brew install ruby)')
+
+    elif os_info.is_linux:
+        # TODO: Add yum/apt-get check
+        pass
 
 
 @task
@@ -99,6 +129,7 @@ which depot-pm 1>/dev/null 2>&1 || {
     ${PIP} install depot-pm
 }
 # Run install
+depot-pm setup
 depot-pm install
 """
 
