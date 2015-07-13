@@ -117,8 +117,8 @@ class Configuration(object):
                 else:
                     test = None
 
-                if installer.multiple and not test:
-                    # Multiple-install directly
+                if installer.multiple and not test and not package.single_install:
+                    # Install multiple packages directly at once
                     multi_install_packages.append(package.name)
                 else:
                     # Install one-by-one (including test)
@@ -126,7 +126,7 @@ class Configuration(object):
                     if test:
                         command = '{} 1>/dev/null 2>&1 || {}'.format(test, command)
                     commands.append(command)
-            # Collect multuple-install
+            # Collect multuple-installing pacakges
             if multi_install_packages:
                 commands.append(installer.syntax.format(installer.name, ' '.join(multi_install_packages)))
             # Append sudo

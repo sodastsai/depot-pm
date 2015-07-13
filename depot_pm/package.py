@@ -24,10 +24,12 @@ class Package(object):
             self._name = package_source.get('package', None)
             self._test = package_source.get('test', None)
             self._skip_test = package_source.get('skip-test', False)
+            self._single_install = package_source.get('single', False)
         else:
             self._name = package_source
             self._test = None
             self._skip_test = False
+            self._single_install = False
 
         assert self._name, 'Package name is required field. (package_source={})'.format(package_source)
 
@@ -51,6 +53,13 @@ class Package(object):
         :rtype: bool
         """
         return self._skip_test
+
+    @property
+    def single_install(self):
+        """
+        :rtype: bool
+        """
+        return self._single_install
 
     def __repr__(self):
         return '<{} {}>'.format(self.__class__.__name__, self.name)
