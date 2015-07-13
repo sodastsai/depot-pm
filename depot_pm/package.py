@@ -15,6 +15,7 @@
 #
 
 from __future__ import unicode_literals, division, absolute_import, print_function
+import six
 
 
 class Package(object):
@@ -25,13 +26,16 @@ class Package(object):
             self._test = package_source.get('test', None)
             self._skip_test = package_source.get('skip-test', False)
             self._single_install = package_source.get('single', False)
+            self._post_install_script = package_source.get('post-install', None)
         else:
             self._name = package_source
             self._test = None
             self._skip_test = False
             self._single_install = False
+            self._post_install_script = None
 
-        assert self._name, 'Package name is required field. (package_source={})'.format(package_source)
+        assert self._name and isinstance(self._name, six.string_types),\
+            'Package name is required field. (package_source={})'.format(package_source)
 
     @property
     def name(self):
@@ -43,7 +47,7 @@ class Package(object):
     @property
     def test(self):
         """
-        :rtype: str
+        :rtype: str | None
         """
         return self._test
 
@@ -60,6 +64,13 @@ class Package(object):
         :rtype: bool
         """
         return self._single_install
+
+    @property
+    def post_install_script(self):
+        """
+        :rtype: str | None
+        """
+        return self._post_install_script
 
     def __repr__(self):
         return '<{} {}>'.format(self.__class__.__name__, self.name)

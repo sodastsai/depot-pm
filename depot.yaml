@@ -4,6 +4,10 @@ packages:
     - boto
     - package: markdown
       single: true
+    - package: django
+      post-install: |
+        echo "yo~"
+        echo "django installed"
   brew:
     - node
     - package: youtube-dl

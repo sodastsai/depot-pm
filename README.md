@@ -74,8 +74,8 @@ The format of package name could be any acceptable form of each installers.
 
 
 ### Installers
-  
-The ```installers``` section defines an installer. Installer configurations has following keys: 
+
+The ```installers``` section defines an installer. Installer configurations has following keys:
 
 Key | Description | Default Value
 ----|-------------|---------------
@@ -107,4 +107,3 @@ Use the issue tracker to contact me :smile:
 ## TODO
 
 * check package.json, requirements.txt, and other package file support.
-* post-install action of each package

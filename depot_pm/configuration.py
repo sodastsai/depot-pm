@@ -117,7 +117,7 @@ class Configuration(object):
                 else:
                     test = None
 
-                if installer.multiple and not test and not package.single_install:
+                if installer.multiple and not test and not package.single_install and not package.post_install_script:
                     # Install multiple packages directly at once
                     multi_install_packages.append(package.name)
                 else:
@@ -125,6 +125,8 @@ class Configuration(object):
                     command = installer.syntax.format(installer.name, package.name)
                     if test:
                         command = '{} 1>/dev/null 2>&1 || {}'.format(test, command)
+                    if package.post_install_script:
+                        command = '({}) && ({})'.format(command, '; '.join(package.post_install_script.splitlines()))
                     commands.append(command)
             # Collect multuple-installing pacakges
             if multi_install_packages:
