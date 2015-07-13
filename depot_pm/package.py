@@ -21,11 +21,15 @@ class Package(object):
 
     def __init__(self, package_source):
         if isinstance(package_source, dict):
-            self._name = package_source['package']
-            self._test = package_source['test']
+            self._name = package_source.get('package', None)
+            self._test = package_source.get('test', None)
+            self._skip_test = package_source.get('skip-test', False)
         else:
             self._name = package_source
             self._test = None
+            self._skip_test = False
+
+        assert self._name, 'Package name is required field. (package_source={})'.format(package_source)
 
     @property
     def name(self):
@@ -40,6 +44,13 @@ class Package(object):
         :rtype: str
         """
         return self._test
+
+    @property
+    def skip_test(self):
+        """
+        :rtype: bool
+        """
+        return self._skip_test
 
     def __repr__(self):
         return '<{} {}>'.format(self.__class__.__name__, self.name)

@@ -3,7 +3,9 @@ packages:
     - taskr
     - boto
   brew:
-    - youtube-dl
+    - node
+    - package: youtube-dl
+      skip-test: true
     - test: which python3
       package: python3
     - test: :has_command:wget
@@ -21,4 +23,5 @@ installers:
     os: true
     multiple: true
     syntax: "{} install {}"
-    command: "brew"
+    command: brew
+    test: "brew list -1 | grep {package}"

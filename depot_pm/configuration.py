@@ -90,6 +90,18 @@ class Configuration(object):
                       key=lambda _installer: _installer.os,
                       reverse=True)
 
+    @staticmethod
+    def _finalize_test(raw_test, package):
+        if raw_test.startswith(':'):
+            check_test_name, _, args = raw_test[1:].partition(':')
+            if check_test_name in test_names:
+                test = 'depot-pm check {} {}'.format(check_test_name, args)
+            else:
+                raise ValueError('Invalid test name for *check* command: {}'.format(check_test_name))
+        else:
+            test = raw_test
+        return test.format(package=package.name)
+
     @property
     def commands(self):
         # Traversal installers
@@ -98,22 +110,18 @@ class Configuration(object):
             multi_install_packages = []
             # Traversal packages
             for package in installer:
-                if installer.multiple and not package.test:
+                if not package.skip_test and package.test:
+                    test = self._finalize_test(package.test, package)
+                elif not package.skip_test and installer.test:
+                    test = self._finalize_test(installer.test, package)
+                else:
+                    test = None
+
+                if installer.multiple and not test:
                     # Multiple-install directly
                     multi_install_packages.append(package.name)
                 else:
                     # Install one-by-one (including test)
-                    test = None
-                    if package.test:
-                        if package.test.startswith(':'):
-                            check_test_name, _, args = package.test[1:].partition(':')
-                            if check_test_name in test_names:
-                                test = 'depot-pm check {} {}'.format(check_test_name, args)
-                            else:
-                                raise ValueError('Invalid test name for *check* command: {}'.format(check_test_name))
-                        else:
-                            test = package.test
-
                     command = installer.syntax.format(installer.name, package.name)
                     if test:
                         command = '{} 1>/dev/null 2>&1 || {}'.format(test, command)

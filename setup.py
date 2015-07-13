@@ -37,7 +37,7 @@ setup(name='depot-pm',
       packages=find_packages(),
       install_requires=[
           'PyYAML>=3.08',
-          'taskr>=0.2.13',
+          'taskr>=0.2.24',
           'requests>=2.5',
       ],
 

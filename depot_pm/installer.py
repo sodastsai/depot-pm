@@ -38,6 +38,8 @@ class Installer(object):
         """:type: str"""
         self.packages = kwargs.get('packages', [])
         """:type: list[depot_pm.package.Package]"""
+        self.test = kwargs.get('test', None)
+        """:type: str"""
 
     def __repr__(self):
         return '<{}: {}>'.format(self.__class__.__name__, self.name)
@@ -59,6 +61,6 @@ default_installers = (
     Installer('pip3'),
     Installer('gem'),
     Installer('npm', syntax='{} install -g {}'),
-    Installer('brew', os=True),
+    Installer('brew', os=True, test='brew list -1 | grep {package}'),
     Installer('yum', os=True, sudo=True, syntax='{} install -y {}'),
 )
