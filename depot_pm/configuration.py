@@ -122,7 +122,7 @@ class Configuration(object):
                     multi_install_packages.append(package.name)
                 else:
                     # Install one-by-one (including test)
-                    command = installer.syntax.format(installer.name, package.name)
+                    command = installer.syntax.format(installer.command, package.name)
                     if test:
                         command = '{} 1>/dev/null 2>&1 || {}'.format(test, command)
                     if package.post_install_script:
