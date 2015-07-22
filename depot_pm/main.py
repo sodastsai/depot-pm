@@ -88,7 +88,7 @@ def install(package_file=None, verbose=False, dry_run=False):
         if verbose:
             console.info('Execute command: {}'.format(command))
         if not dry_run:
-            run(command, should_raise_when_fail=True)
+            run(command, print_command=True, capture_output=False, should_raise_when_fail=True)
         else:
             console.show(command)
 
